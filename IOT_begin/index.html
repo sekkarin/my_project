@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>IOT TEST</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="js.js"></script>
+ 
+</head>
+
+
+<body class="">
+    <!-- main container -->
+    <div class="container">
+        <h1 class="text-white">Fribase read on database</h1>
+        <!-- input email -->
+        <div class="form-group">
+            <label for="text1" class="text-white font-italic">Email</label>
+            <input type="email" class="form-control " id="email">
+        </div>
+        <!-- from input passwrod -->
+        <div class="form-group">
+            <label for="password" class="text-white font-italic">Password</label>
+            <input type="password" class="form-control" id="password">
+        </div>
+        <!-- form input address -->
+        <div class="form-group ">
+            <label for="" class="text-white fonnt-italic">address</label>
+            <input type="text" name="" id="address" class="form-control " placeholder="" aria-describedby="helpId">
+        </div>
+
+        <!-- group button -->
+        <button type="button" class="btn btn-primary" id="update " onclick="updateOnclick()" >UPDATE</button>
+        <button type="button" class="btn btn-warning" id="save" onclick="saveOnclick()">SAVE</button>
+        <button type="button" class="btn btn-danger" id="delete" onclick="DelOnclick()">DELETE</button>
+
+    </div><!-- end contrianer -->
+    
+</body>
+
+</html>

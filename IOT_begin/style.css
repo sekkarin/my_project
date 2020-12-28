@@ -1,0 +1,10 @@
+html,body {height: 100%;}
+body {background-color: rgb(24, 28, 50);
+        text-align: center;
+    }
+.container{
+    width: 50%;
+}
+label{
+    text-align: right;
+}
