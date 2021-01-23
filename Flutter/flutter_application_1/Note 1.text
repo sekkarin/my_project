@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(title: "test", home: test()));
+}
+
+class test extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _test();
+  }
+}
+
+class _test extends State<test> {
+  String name = "";
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('statefull App Ex')),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            TextField(
+              onChanged: (String user) {
+                setState(() {
+                  name = user;
+                });
+              },
+            ),
+            Padding(
+                padding: EdgeInsets.all(30.0),
+                child: Text('name your city $name',
+                    style: TextStyle(fontSize: 30.0)))
+          ],
+        ),
+      ),
+    );
+  }
+}
