@@ -11,5 +11,5 @@
     "python.testing.unittestEnabled": false,
     "python.testing.promptToConfigure": false,
     "python.pythonPath": "C:\\Users\\KEN\\AppData\\Local\\Continuum\\anaconda3\\python.exe",
-    "jupyter.jupyterServerType": "remote"
+    "jupyter.jupyterServerType": "local"
 }

@@ -1,49 +1,66 @@
-#include <ESP8266WiFi.h>
-#include <FirebaseArduino.h>
+// ArduinoJson - arduinojson.org
+// Copyright Benoit Blanchon 2014-2019
+// MIT License
+//
+// This example shows how to generate a JSON document with ArduinoJson.
 
-// Set these to run example.
-#define FIREBASE_HOST "iot-begin-default-rtdb.firebaseio.com"
-#define FIREBASE_AUTH "RYAjDY3D1laUkUhk5HmMqVUSy3g61GNOor4wUuL4"
-#define WIFI_SSID "win"
-#define WIFI_PASSWORD "125478963"
+#include <ArduinoJson.h>
+int  num_2;
+unsigned int num_1;
+unsigned long previousMillis = 100; // will store last time LED was updated
+char get_status_led;
 
-int i = 0;
+// constants won't change:
+const long interval = 10; // interval at which to blink (milliseconds)
+void add_value(unsigned int num_1, int num_2,int num_3);
+
 void setup()
 {
 
     Serial.begin(115200);
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    Serial.print("connecting");
-
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        Serial.print(".");
-        delay(500);
-    }
-
-    Serial.println();
-    Serial.print("connected: ");
-    Serial.println(WiFi.localIP());
-
-    Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+    pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop()
 {
 
-    Firebase.setInt("IntNumber", i = random(1, 100));
-    if (Firebase.failed())
-    {
+    unsigned long currentMillis = millis();
 
-        Serial.println("set /IntNumber failed:");
-        Serial.println(Firebase.error());
-        return;
+    if (currentMillis - previousMillis >= interval)
+    {
+        previousMillis = currentMillis;
+        num_1++;
+        add_value(num_1, num_2,NULL);
     }
 
-    Serial.print("set /IntNumber to ");
-    Serial.println(Firebase.getInt("IntNumber"));
+    if (Serial.available() > 0)
+    {
+        
+        get_status_led = Serial.read();
+        if (get_status_led == '1')
+        {
+            digitalWrite(LED_BUILTIN, HIGH);
+        }
+        else if (get_status_led == '0')
+        {
+            digitalWrite(LED_BUILTIN, LOW);
+        }
+        add_value(num_1, num_2,get_status_led);
+    }
+}
 
-    i++;
+void add_value(unsigned int num_1, int num_2,int num_3)
+{
+    StaticJsonBuffer<200> jsonBuffer;
 
-    delay(500);
+    JsonObject &root = jsonBuffer.createObject();
+
+    JsonArray &data = root.createNestedArray("data");
+
+    data.add(num_1);
+    data.add(num_2 = random(1, 100));
+    data.add(num_3);
+    root.printTo(Serial);
+    Serial.println();
+    //  root.prettyPrintTo(Serial);
 }
