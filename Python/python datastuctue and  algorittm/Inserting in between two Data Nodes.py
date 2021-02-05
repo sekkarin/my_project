@@ -32,6 +32,8 @@ e3 = Node("Thu")
 
 list.headval.nextval = e2
 e2.nextval = e3
+list.listprint()
+print("Inbetween")
 
 list.Inbetween(list.headval.nextval,"Fri")
 
