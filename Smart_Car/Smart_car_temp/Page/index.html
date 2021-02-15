@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .button {
+            background-color: #990033;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            padding: 30px 30px;
+            font-size: 20px;
+            text-align: center;
+            direction: none;
+            text-decoration: none;
+        }
+    </style>
+    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html">
+    <meta name="viewport" content="width=device-width, initial-scale=1,height = device-height">
+    <title>Control_car</title>
+</head>
+
+<body onload='init()'>
+    <center>
+        <h1>Car control</h1>
+        <br>
+        <h3>ปุ่มเตรียมพร้อมการตรวจ</h3>
+        <input type="button" value="Standby" id="btn_stb" class="button">
+        <br>
+        <hr style="width: 25%;">
+        <input type="button" class="button" id="btnf" value="forward">
+        <br><br>
+        <input type="button" class="button" id="btnl" value="<< Left &nbsp;">
+        <input type="button" class="button" id="btnr" value="Right >>">
+        <br><br>
+        <input type="button" class="button" id="btnb" value="backward">
+        <div id="status">...</div>
+    </center>
+</body>
+<script type="text/javascript">
+    function init() {
+        document.getElementById('btn_stb').addEventListener('touchstart', Standby_, false);
+        document.getElementById('btn_stb').addEventListener('touchend', stopcar, false);
+        document.getElementById('btnf').addEventListener('touchstart', movef, false);
+        document.getElementById('btnf').addEventListener('touchend', stopcar, false);
+        document.getElementById('btnl').addEventListener('touchstart', movel, false);
+        document.getElementById('btnl').addEventListener('touchend', stopcar, false);
+        document.getElementById('btnr').addEventListener('touchstart', mover, false);
+        document.getElementById('btnr').addEventListener('touchend', stopcar, false);
+        document.getElementById('btnb').addEventListener('touchstart', moveb, false);
+        document.getElementById('btnb').addEventListener('touchend', stopcar, false);
+    }
+    function move(dir) {
+        document.getElementById('status').innerHTML = dir;
+        var requst = new XMLHttpRequest();
+        requst.open('GER', '/engines/' + dir, true);
+        requst.send(null);
+    }
+    function movef() { move('f'); }
+    function movel() { move('l'); }
+    function mover() { move('r'); }
+    function moveb() { move('b'); }
+    function Standby_() { move('c'); }
+    function stopcar() {
+        document.getElementById('status').innerHTML = 's';
+        var requst = new XMLHttpRequest();
+        requst.open('GER', '/engines/s', true); requst.send(null);
+    } 
+</script>
+</html>
