@@ -10,6 +10,6 @@
     "python.testing.nosetestsEnabled": false,
     "python.testing.unittestEnabled": false,
     "python.testing.promptToConfigure": false,
-    "python.pythonPath": "C:\\Users\\KEN\\Miniconda3\\python.exe",
+    "python.pythonPath": "c:\\users\\ken\\appdata\\local\\programs\\python\\python38-32\\python.exe",
     "jupyter.jupyterServerType": "local"
 }
