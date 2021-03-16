@@ -1,15 +1,15 @@
 
 #include <ESP8266WiFi.h>
 
-#define SPEED 800
-const char* ssid = "win";
-const char* password = "125478963";
+#define SPEED 1024
+const char* ssid = "microchip";
+const char* password = "12345678";
 
 // Create an instance of the server
 // specify the port to listen on as an argument
 
 int moter_A = D3;         int moter_B = D4;
-int moter_A_speed = D1;   int moter_B_speed = D2;4  
+int moter_A_speed = D1;   int moter_B_speed = D2;
 
 void up();
 void down();
@@ -160,7 +160,7 @@ String css() {
 }
 String js() {
   String strjs = "<script type=\"text/javascript\">";
-  strjs += "function init() { document.getElementById('btnf').addEventListener('touchstart', movef, false);";
+  strjs += "function init() { move('s');move('s');document.getElementById('btnf').addEventListener('touchstart', movef, false);";
   strjs += "document.getElementById('btnf').addEventListener('touchend', stopcar, false);";
   strjs += "document.getElementById('btnl').addEventListener('touchstart', movel, false);";
   strjs += "document.getElementById('btnl').addEventListener('touchend', stopcar, false);";
@@ -179,6 +179,6 @@ String js() {
   strjs += " function stopcar(){document.getElementById('status').innerHTML = 's';";
   strjs += " var requst = new XMLHttpRequest();";
   strjs += "requst.open('GER', '/engines/s',true);";
-  strjs += " requst.send(null);}</script>";
+  strjs += " requst.send(null);move('s');}</script>";
   return strjs;
 }

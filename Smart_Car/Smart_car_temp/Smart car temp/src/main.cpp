@@ -3,8 +3,8 @@
 #include <ESP8266WiFi.h>
 
 #define SPEED 800
-const char *ssid = "win";
-const char *password = "125478963";
+const char *ssid = "microchip";
+const char *password = "12345678";
 
 // Create an instance of the server
 // specify the port to listen on as an argument
@@ -203,7 +203,7 @@ String css()
 String js()
 {
   String strjs = "<script type=\"text/javascript\">";
-  strjs += "function init() { document.getElementById('btnf').addEventListener('touchstart', movef, false);";
+  strjs += "function init() { move('s');move('s');stopcar();document.getElementById('btnf').addEventListener('touchstart', movef, false);";
   strjs += "document.getElementById('btn_stb').addEventListener('touchstart', Standby_, false);";
   strjs += "document.getElementById('btn_stb').addEventListener('touchend', stopcar, false);";
   strjs += "document.getElementById('btnf').addEventListener('touchend', stopcar, false);";
@@ -225,6 +225,6 @@ String js()
   strjs += " function stopcar(){document.getElementById('status').innerHTML = 's';";
   strjs += " var requst = new XMLHttpRequest();";
   strjs += "requst.open('GER', '/engines/s',true);";
-  strjs += " requst.send(null);}</script>";
+  strjs += " requst.send(null); }</script>";
   return strjs;
 }

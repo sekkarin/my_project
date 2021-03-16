@@ -56,7 +56,7 @@ void loop() {
   Serial.println(pos);
   // myservo.write(pos.toInt());
   // // set value
-  // Firebase.setFloat("number", 42.0);
+  Firebase.setFloat("number", 42.0);
   // // handle error
   // if (Firebase.failed()) {
   //     Serial.print("setting /number failed:");

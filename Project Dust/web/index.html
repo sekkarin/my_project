@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Dust</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase.js"></script>
+
+
+</head>
+
+<body>
+    <div class="jumbotron text-center">
+        <h1 class="display-4" >คุณภาพอากาศวันนี้</h1>
+        <p id="status" class="display-3 text-dark">...</p>
+        <p class="lead" id="display_status" class="font-weight-light">...</p>
+        <hr class="my-4">
+        <p>ข้อมูลดัชนีคุณภาพอากาศ (Air Quality Index : AQI)</p>
+        <a class="btn btn-primary btn-lg" href="http://air4thai.pcd.go.th/webV2/aqi_info.php" role="button">Learn
+            more</a>
+            <div class="jumbotron text-center" style="margin-bottom:0">
+                <p>จัดทําโดย</p>
+                <p>นางสาว ภัควรรณ ยังให้ผล 6231050006 </p>
+                <p>นาย ศักรินทร์ สองหอยู่ 6231050010 </p>
+              </div>
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyDp0RJtRiIXXTP3X3bDRbpv-Vaq9RsSE_I",
+                authDomain: "iot-begin.firebaseapp.com",
+                databaseURL: "https://iot-begin-default-rtdb.firebaseio.com",
+                projectId: "iot-begin",
+                storageBucket: "iot-begin.appspot.com",
+                messagingSenderId: "680136782403",
+                appId: "1:680136782403:web:40fd21e6560aeaa468daf6"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            //instace ob 
+            var database = firebase.database();
+
+            var starCountRef = firebase.database().ref('dust/data');
+            starCountRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                console.log(data.value);
+                document.getElementById('status').innerHTML = "AQI : " + data.value;
+                display(data.value);
+            });
+            function display(data) {
+                if (data <= 25) {
+                    document.getElementById('display_status').innerHTML = "<h2>ระดับ คุณภาพอากาศดีมาก</h2> <p>คุณภาพอากาศดีมาก เหมาะสำหรับกิจกรรมกลางแจ้งและการท่องเที่ยว</p>"
+                }
+                else if (data <= 50) {
+                    document.getElementById('display_status').innerHTML = "<h2 class=\"text-success\">ระดับ คุณภาพอากาศดี</h2> <p>คุณภาพอากาศดี สามารถทำกิจกรรมกลางแจ้งและการท่องเที่ยวได้ตามปกติ</p>"
+                }
+                else if (data <= 100) {
+                    document.getElementById('display_status').innerHTML = "<h2  class=\"text-warning\"> ระดับ ปานกลาง</h2> <p> ประชาชนทั่วไป : สามารถทำกิจกรรมกลางแจ้งได้ตามปกติผู้ที่ต้องดูแลสุขภาพเป็นพิเศษ: หากมีอาการเบื้องต้น เช่น ไอ หายใจลำบาก ระคายเคืองตา ควรลดระยะเวลาการทำกิจกรรมกลางแจ้ง</p > ";
+                }
+                else if (data <= 150) {
+                    document.getElementById('display_status').innerHTML = "<h2 style=\"color:rgb(211, 169, 77);text-align:center;\"> ระดับ เริ่มมีผลกระทบต่อสุขภาพ</h2> <p> ประชาชนทั่วไป : ควรเฝ้าระวังสุขภาพ ถ้ามีอาการเบื้องต้น เช่น ไอ หายใจลำบาก ระคายเคืองตา ควรลดระยะเวลาการทำกิจกรรมกลางแจ้ง หรือใช้อุปกรณ์ป้องกันตนเองหากมีความจำเป็นผู้ที่ต้องดูแลสุขภาพเป็นพิเศษ : ควรลดระยะเวลาการทำกิจกรรมกลางแจ้ง หรือใช้อุปกรณ์ป้องกันตนเองหากมีความจำเป็น ถ้ามีอาการทางสุขภาพ เช่น ไอ หายใจลำบาก ตาอักเสบ แน่นหน้าอก ปวดศีรษะ หัวใจเต้นไม่เป็นปกติ คลื่นไส้ อ่อนเพลีย ควรปรึกษาแพทย์</p > ";
+                } else if (data > 150) {
+                    document.getElementById('display_status').innerHTML = "<h2  class=\"text-danger\"> ระดับ มีผลกระทบต่อสุขภาพ</h2> <p> ทุกคนควรหลีกเลี่ยงกิจกรรมกลางแจ้งหลีกเลี่ยงพื้นที่ที่มีมลพิษทางอากาศสูง หรือใช้อุปกรณ์ป้องกันตนเองหากมีความจำเป็น หากมีอาการทางสุขภาพควรปรึกษาแพทย์</p > ";
+                }else  document.getElementById('display_status').innerHTML = 'ไม่สามารถตรวจสอบได้';
+            }
+        </script>
+    </div>
+</body>
+
+</html>
