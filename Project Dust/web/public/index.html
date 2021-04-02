@@ -20,18 +20,19 @@
 
 <body>
     <div class="jumbotron text-center">
-        <h1 class="display-4" >คุณภาพอากาศวันนี้</h1>
+        <h1 class="display-4">คุณภาพอากาศวันนี้</h1>
         <p id="status" class="display-3 text-dark">...</p>
         <p class="lead" id="display_status" class="font-weight-light">...</p>
         <hr class="my-4">
         <p>ข้อมูลดัชนีคุณภาพอากาศ (Air Quality Index : AQI)</p>
         <a class="btn btn-primary btn-lg" href="http://air4thai.pcd.go.th/webV2/aqi_info.php" role="button">Learn
             more</a>
-            <div class="jumbotron text-center" style="margin-bottom:0">
-                <p>จัดทําโดย</p>
-                <p>นางสาว ภัควรรณ ยังให้ผล 6231050006 </p>
-                <p>นาย ศักรินทร์ สองหอยู่ 6231050010 </p>
-              </div>
+        <div class="jumbotron text-center" style="margin-bottom:0">
+            <p>จัดทําโดย</p>
+            <p>นางสาว ภัควรรณ ยังให้ผล 6231050006 </p>
+            <p>นาย ศักรินทร์ สิงหอยู่ 6231050010 </p>
+            <p>นายเตชภณ จีนภักดี 6231050004 </p>
+        </div>
         <script>
             // Your web app's Firebase configuration
             var firebaseConfig = {
@@ -52,8 +53,13 @@
             starCountRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 console.log(data.value);
-                document.getElementById('status').innerHTML = "AQI : " + data.value;
-                display(data.value);
+                if (data.value > 200) {
+                    document.getElementById('status').innerHTML = "AQI : " + "มากกว่า 200 +";
+                    display(data.value);
+                } else {
+                    document.getElementById('status').innerHTML = "AQI : " + data.value;
+                    display(data.value);
+                }
             });
             function display(data) {
                 if (data <= 25) {
@@ -69,7 +75,7 @@
                     document.getElementById('display_status').innerHTML = "<h2 style=\"color:rgb(211, 169, 77);text-align:center;\"> ระดับ เริ่มมีผลกระทบต่อสุขภาพ</h2> <p> ประชาชนทั่วไป : ควรเฝ้าระวังสุขภาพ ถ้ามีอาการเบื้องต้น เช่น ไอ หายใจลำบาก ระคายเคืองตา ควรลดระยะเวลาการทำกิจกรรมกลางแจ้ง หรือใช้อุปกรณ์ป้องกันตนเองหากมีความจำเป็นผู้ที่ต้องดูแลสุขภาพเป็นพิเศษ : ควรลดระยะเวลาการทำกิจกรรมกลางแจ้ง หรือใช้อุปกรณ์ป้องกันตนเองหากมีความจำเป็น ถ้ามีอาการทางสุขภาพ เช่น ไอ หายใจลำบาก ตาอักเสบ แน่นหน้าอก ปวดศีรษะ หัวใจเต้นไม่เป็นปกติ คลื่นไส้ อ่อนเพลีย ควรปรึกษาแพทย์</p > ";
                 } else if (data > 150) {
                     document.getElementById('display_status').innerHTML = "<h2  class=\"text-danger\"> ระดับ มีผลกระทบต่อสุขภาพ</h2> <p> ทุกคนควรหลีกเลี่ยงกิจกรรมกลางแจ้งหลีกเลี่ยงพื้นที่ที่มีมลพิษทางอากาศสูง หรือใช้อุปกรณ์ป้องกันตนเองหากมีความจำเป็น หากมีอาการทางสุขภาพควรปรึกษาแพทย์</p > ";
-                }else  document.getElementById('display_status').innerHTML = 'ไม่สามารถตรวจสอบได้';
+                } else document.getElementById('display_status').innerHTML = 'ไม่สามารถตรวจสอบได้';
             }
         </script>
     </div>

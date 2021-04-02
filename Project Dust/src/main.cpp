@@ -3,8 +3,8 @@
 
 #define FIREBASE_HOST "iot-begin-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "RYAjDY3D1laUkUhk5HmMqVUSy3g61GNOor4wUuL4"
-#define WIFI_SSID "microchip"
-#define WIFI_PASSWORD "12345678"
+#define WIFI_SSID "win"
+#define WIFI_PASSWORD "125478963"
 
 //Define FirebaseESP8266 data object
 FirebaseData fbdo;
