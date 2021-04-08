@@ -2,6 +2,7 @@
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include <DHT_U.h>
+#include <ArduinoJson.h>
 
 unsigned long previousMillis = 0; // will store last time LED was updated
 // constants won't change:
@@ -27,7 +28,7 @@ int read_temp();
 
 void setup()
 {
-  // put your setup code here, to run once:
+
   Serial.begin(115200);
   dht.begin();
   pinMode(rain_1, INPUT);
@@ -40,21 +41,16 @@ void setup()
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
-  // int get_value_1 = digitalRead(rain_1);
-  // int get_value_2 = digitalRead(rain_2);
-  // int get_value_3 = digitalRead(rain_3);
-  // if ((get_value_1 && get_value_2 && get_value_3) == true)
+
+  // // put your main code here, to run repeatedly:
+
+  // if ((digitalRead(rain_1) && digitalRead(rain_2) && digitalRead(rain_3) == true)
   // {
-  //   Serial.println("ฝนตก");
-  //   Serial.println((digitalRead(rain_1) && digitalRead(rain_2) && digitalRead(rain_3)));
-  //   delay(2000);
+  //   Serial.println()
   // }
   // else
   // {
-  //   Serial.println("ฝนไม่ตก");
-  //   Serial.println((digitalRead(rain_1) && digitalRead(rain_2) && digitalRead(rain_3)));
-  //   delay(2000);
+
   // }
 
   if (read_temp() > 27)
@@ -84,7 +80,7 @@ void loop()
   if (map(analogRead(soil_1), 0, 4096, 100, 0) < 20)
   {
     //เงื่อนใขที่ใส่
-    delay(3000)
+    delay(3000);
   }
 }
 

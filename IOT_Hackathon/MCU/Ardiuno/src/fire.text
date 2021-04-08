@@ -1,0 +1,204 @@
+ // put your main code here, to run repeatedly:
+
+  // if ((digitalRead(rain_1) && digitalRead(rain_2) && digitalRead(rain_3) == true)
+  // {
+    
+  // }
+  // else
+  // {
+   
+  // }
+
+  if (read_temp() > 27)
+  {
+    Serial.println(read_temp());
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis >= interval)
+    {
+      previousMillis = currentMillis;
+      digitalWrite(relay_low_temp, HIGH);
+    }
+    //รดนํ้าเมื่ออุณหถูมิสูง
+  }
+  else
+  {
+    digitalWrite(relay_low_temp, LOW);
+  }
+  if (analogRead(ldr) <= 500)
+  {
+    // เงื่อนใขที่จะใส่
+    digitalWrite(relay_light, HIGH);
+  }
+  else
+  {
+    digitalWrite(relay_light, LOW);
+  }
+  if (map(analogRead(soil_1), 0, 4096, 100, 0) < 20)
+  {
+    //เงื่อนใขที่ใส่
+    delay(3000);
+  }
+  /////////////
+  #include <Arduino.h>
+#include <Adafruit_Sensor.h>
+#include <DHT.h>
+#include <DHT_U.h>
+#include "MicroGear.h"
+#include "WiFi.h"
+
+const char *ssid = "win";
+const char *password = "125478963";
+
+#define APPID "Project_1"
+#define KEY "e0c06be3-5f7a-4566-8239-c737e1d95f39"
+#define SECRET "Iq)Ezp_c8C~plKBvNBw~rT2qs-qA)g59"
+#define ALIAS "Project_1"
+
+WiFiClient client;
+int timer = 0;
+MicroGear microgear(client);
+
+void onMsghandler(char *topic, uint8_t *msg, unsigned int msglen)
+{
+  Serial.print("Incoming message --> ");
+  msg[msglen] = '\0';
+  Serial.println((char *)msg);
+}
+
+void onFoundgear(char *attribute, uint8_t *msg, unsigned int msglen)
+{
+  Serial.print("Found new member --> ");
+  for (int i = 0; i < msglen; i++)
+    Serial.print((char)msg[i]);
+  Serial.println();
+  
+}
+
+void onLostgear(char *attribute, uint8_t *msg, unsigned int msglen)
+{
+  Serial.print("Lost member --> ");
+  for (int i = 0; i < msglen; i++)
+    Serial.print((char)msg[i]);
+  Serial.println();
+}
+
+/* When a microgear is connected, do this */
+void onConnected(char *attribute, uint8_t *msg, unsigned int msglen)
+{
+  Serial.println("Connected to NETPIE...");
+  /* Set the alias of this microgear ALIAS */
+  microgear.setAlias(ALIAS);
+}
+
+unsigned long previousMillis = 0; // will store last time LED was updated
+// constants won't change:
+const long interval = 432000; // 2 ชั่วโมง
+
+int ldr = 13;
+int soil_1 = 12;
+int soil_2 = 13;
+
+int rain_1 = 27;
+int rain_2 = 26;
+int rain_3 = 25;
+
+int relay_light = 33;
+int relay_low_temp = 32;
+
+#define DHTPIN 23     // Digital pin connected to the DHT sensor
+#define DHTTYPE DHT22 // DHT 22 (AM2302)
+
+DHT_Unified dht(DHTPIN, DHTTYPE);
+
+int read_temp();
+
+void setup()
+{
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  dht.begin();
+  pinMode(rain_1, INPUT);
+  pinMode(rain_2, INPUT);
+  pinMode(rain_3, INPUT);
+
+  pinMode(relay_light, OUTPUT);
+  pinMode(relay_low_temp, OUTPUT);
+  microgear.on(MESSAGE, onMsghandler);
+
+  /* Call onFoundgear() when new gear appear */
+  microgear.on(PRESENT, onFoundgear);
+
+  /* Call onLostgear() when some gear goes offline */
+  microgear.on(ABSENT, onLostgear);
+
+  /* Call onConnected() when NETPIE connection is established */
+  microgear.on(CONNECTED, onConnected);
+  if (WiFi.begin(ssid, password))
+  {
+    while (WiFi.status() != WL_CONNECTED)
+    {
+      delay(500);
+      Serial.print(".");
+    }
+  }
+
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  /* Initial with KEY, SECRET and also set the ALIAS here */
+  microgear.init(KEY, SECRET, ALIAS);
+
+  /* connect to NETPIE to a specific APPID */
+  microgear.connect(APPID);
+}
+
+void loop()
+{
+  /* To check if the microgear is still connected */
+  if (microgear.connected())
+  {
+    Serial.println("connected");
+
+    /* Call this method regularly otherwise the connection may be lost */
+    microgear.loop();
+
+    if (timer >= 1000)
+    {
+      Serial.println("Publish...");
+
+      /* Chat with the microgear named ALIAS which is myself */
+      microgear.chat(ALIAS, "Hello");
+      timer = 0;
+    }
+    else
+      timer += 100;
+  }
+  else
+  {
+    Serial.println("connection lost, reconnect...");
+    if (timer >= 5000)
+    {
+      microgear.connect(APPID);
+      timer = 0;
+    }
+    else
+      timer += 100;
+  }
+  delay(100);
+}
+
+int read_temp()
+{
+  sensors_event_t event;
+  delay(200);
+  dht.temperature().getEvent(&event);
+  if (isnan(event.temperature))
+  {
+    Serial.println(F("Error reading temperature!"));
+  }
+  else
+  {
+    return event.temperature;
+  }
+}
